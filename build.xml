@@ -1,0 +1,64 @@
+<project name="wsdecode" default="dist" basedir=".">
+    <description>
+    </description>
+
+
+  <!-- set global properties for this build -->
+    <property file="build.properties" />
+
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+
+    <property name="data"             value="data" />
+    <property name="build"            value="${basedir}/build" />
+    <property name="build.classes"    value="${build}/classes" />
+    <property name="build.dist"       value="${build}/dist" />
+    <property name="build.tmp"        value="${build}/tmp" />
+    <property name="doc"              value="${basedir}/doc" />
+    <property name="doc.javadoc"      value="${doc}/javadoc" />
+    <property name="javac.source"     value="1.5" />
+
+  <path id="build.classpath">
+        <pathelement location="${build.classes}" />
+
+        <!-- Pull in any jars files that are in the relative
+             lib directory. -->
+        <fileset dir="lib">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+	
+	<property name="build.classpath" refid="build.classpath" />
+
+    
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+	<mkdir dir="${build.classes}"/>
+	<mkdir dir="${build.dist}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build.classes}" classpathref="build.classpath" />
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${build.dist}/lib"/>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${build.dist}/lib/barcode.jar" basedir="${build.classes}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

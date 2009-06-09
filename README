@@ -1,0 +1,84 @@
+ws-decode
+------------------------------------------------------
+
+ws-decode is a bare-bones HTTP interface for decoding 2D barcodes. It works like this:
+
+You send a (binary) POST request to http://localhost:9955/decode containing a PNG or JPG
+file and the server will send back a plain-text version of its (the barcode in the image,
+of course) message body.
+
+------------------------------------------------------
+EXAMPLE
+------------------------------------------------------
+
+	curl -v -H 'Content-Type: image/jpeg' -H 'Expect:' --data-binary \
+	  '@/Users/asc/Desktop/aa.jpg' http://127.0.0.1:9955/decode
+
+	About to connect() to 127.0.0.1 port 9955
+	* Trying 127.0.0.1...
+	* connected
+	* Connected to 127.0.0.1 (127.0.0.1) port 9955
+	> POST /decode HTTP/1.1
+	User-Agent: curl/7.13.1 (powerpc-apple-darwin8.0) libcurl/7.13.1 OpenSSL/0.9.7l zlib/1.2.3
+	Host: 127.0.0.1:9955
+	Pragma: no-cache
+	Accept: */*
+	Content-Type: image/jpeg
+	Content-Length: 4930
+
+	< HTTP/1.1 200 OK
+	< Date: Fri, 22 Feb 2008 06:50:39 GMT
+	< Content-length: 28
+	* Connection #0 to host 127.0.0.1 left intact
+	* Closing connection #0
+
+	http://aaronland.info/weblog
+
+That's it. It will not make you a pony. No. No ponies for you.
+
+------------------------------------------------------
+ERRORS
+------------------------------------------------------
+
+Errors are returned with the HTTP status code 500. Specific error codes
+and messages are returned both in the message body as XML and in the
+'X-ErrorCode' and 'X-ErrorMessage' headers.
+
+------------------------------------------------------
+NOTES
+------------------------------------------------------
+
+By default, ws-decode runs on port 9955. You can override
+this value by specifying your own port number as the first
+(command-line) argument when you start the server or by
+setting the 'PORT' variable in the start.sh script.
+
+The maximum size of a file that you may POST to ws-decode
+is 512kb.
+
+There is no logging to speak of.
+
+------------------------------------------------------
+SEE ALSO
+------------------------------------------------------
+
+http://code.google.com/p/zxing/
+http://javablog.co.uk/2007/10/27/http-server-api-backport-to-java-5/
+http://www.aaronland.info/weblog/2008/02/05/fox#ws-decode
+
+------------------------------------------------------
+VERSION
+------------------------------------------------------
+
+0.1
+
+------------------------------------------------------
+LICENSE
+------------------------------------------------------
+
+Copyright (c) 2008 Aaron Straup Cope. All Rights Reserved.
+
+This is free software. You may redistribute it and/or modify it
+under the same terms as the GPL license.
+
+
